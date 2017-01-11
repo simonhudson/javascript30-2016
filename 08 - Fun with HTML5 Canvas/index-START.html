@@ -7,6 +7,62 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+
+const canvas = document.getElementById('draw');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+ctx.strokeStyle = '#BADA55';
+ctx.lineJoin = 'round';
+ctx.lineCap = 'round';
+ctx.lineWidth = 50;
+
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let hue = 0;
+let direction = true;
+
+function draw(e) {
+    if (!isDrawing) return;
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; // HSL = Hue (colour), Saturation(brightness), Lightness
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY); //start from...
+    ctx.lineTo(e.offsetX, e.offsetY); // go to...
+    ctx.stroke(); // Complete the stroke
+
+    // Re-assign the last X/Y values
+    lastX = e.offsetX;
+    lastY = e.offsetY;
+    // ES6 (destructuring array): The above can also be written as [lastX, lastY] = [e.offsetX, e.offsetY];
+
+    // Increment the hue so we get a new colour
+    hue++;
+    if (hue >= 360) hue = 0; // We've done a complete loop of the hue values (red -> red = 360), so reset it (stops us getting hues of > 360)
+
+    // If the line width has reached either 100 or 1, flip the direction of line width growth
+    if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+        direction = !direction;
+    }
+    if (direction) {
+        ctx.lineWidth++; // Increment line width
+    } else {
+        ctx.lineWidth--; // Decrement line width
+    }
+}
+
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+
+    // Get the starting position of the mouse so we know where to start the drawing
+    lastX = e.clientX;
+    lastY = e.clientY;
+
+});
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false);
+
 </script>
 
 <style>
