@@ -31,7 +31,7 @@
     }
 
 
-    input:checked + p {
+    input:checked + label {
       background:#F9F9F9;
       text-decoration: line-through;
     }
@@ -40,7 +40,7 @@
       margin:20px;
     }
 
-    p {
+    label {
       margin:0;
       padding:20px;
       transition:background 0.2s;
@@ -66,44 +66,63 @@
   -->
   <div class="inbox">
     <div class="item">
-      <input type="checkbox">
-      <p>This is an inbox layout.</p>
+      <input id="box-1" type="checkbox">
+      <label for="box-1">This is an inbox layout.</label>
     </div>
     <div class="item">
-      <input type="checkbox">
-      <p>Check one item</p>
+      <input  id="box-2"type="checkbox">
+      <label for="box-2">Check one item</label>
     </div>
     <div class="item">
-      <input type="checkbox">
-      <p>Hold down your Shift key</p>
+      <input id="box-3" type="checkbox">
+      <label for="box-3">Hold down your Shift key</label>
     </div>
     <div class="item">
-      <input type="checkbox">
-      <p>Check a lower item</p>
+      <input id="box-4" type="checkbox">
+      <label for="box-4">Check a lower item</label>
     </div>
     <div class="item">
-      <input type="checkbox">
-      <p>Everything inbetween should also be set to checked</p>
+      <input id="box-5" type="checkbox">
+      <label for="box-5">Everything inbetween should also be set to checked</label>
     </div>
     <div class="item">
-      <input type="checkbox">
-      <p>Try do it with out any libraries</p>
+      <input id="box-6" type="checkbox">
+      <label for="box-6">Try do it with out any libraries</label>
     </div>
     <div class="item">
-      <input type="checkbox">
-      <p>Just regular JavaScript</p>
+      <input id="box-7" type="checkbox">
+      <label for="box-7">Just regular JavaScript</label>
     </div>
     <div class="item">
-      <input type="checkbox">
-      <p>Good Luck!</p>
+      <input id="box-8" type="checkbox">
+      <label for="box-8">Good Luck!</label>
     </div>
     <div class="item">
-      <input type="checkbox">
-      <p>Don't forget to tweet your result!</p>
+      <input id="box-9" type="checkbox">
+      <label for="box-9">Don't forget to tweet your result!</label>
     </div>
   </div>
 
 <script>
+
+    const inputs = Array.from(document.querySelectorAll('.inbox input[type="checkbox"]'));
+    let lastChecked;
+
+    function handleCheck(e) {
+        // Check if shift key is down
+        // AND check that they are checking it (not un-checking)
+        let inBetween = false;
+        if (e.shiftKey && this.checked) {
+            inputs.forEach(input => {
+                if (input === this || input === lastChecked) inBetween = !inBetween;
+                if (inBetween) input.checked = true;
+            });
+        }
+        lastChecked = this;
+    };
+
+    inputs.forEach(input => input.addEventListener('click', handleCheck));
+
 </script>
 </body>
 </html>
