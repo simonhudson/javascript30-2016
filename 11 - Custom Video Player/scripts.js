@@ -9,6 +9,7 @@ const ranges = player.querySelectorAll('.player__slider');
 const timeElapsed = player.querySelector('.player__elapsed');
 const timeDuration = player.querySelector('.player__duration');
 const mute = player.querySelector('.player__mute');
+const fullScreen = player.querySelector('.player__fullscreen');
 
 /* Build functions */
 function togglePlay() {
@@ -63,7 +64,19 @@ function toggleMute() {
 	video.muted = !video.muted;
 }
 
-//full screen
+function setFullScreen() {
+
+	// Need vendor prefixes as browser support is flaky at the moment
+	if (video.requestFullscreen)
+		video.requestFullscreen();
+	if (video.webkitRequestFullscreen)
+		video.webkitRequestFullscreen();
+	if (video.mozRequestFullScreen)
+		video.mozRequestFullScreen();
+	if (video.msRequestFullscreen)
+		video.msRequestFullscreen();
+
+}
 
 /* Hook up event listeners */
 video.addEventListener('loadedmetadata', setDuration);
@@ -78,6 +91,7 @@ video.addEventListener('timeupdate', setElapsed);
 toggle.addEventListener('click', togglePlay);
 
 mute.addEventListener('click', toggleMute);
+fullScreen.addEventListener('click', setFullScreen);
 
 skipButtons.forEach(button => button.addEventListener('click', skip));
 
