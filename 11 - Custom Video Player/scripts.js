@@ -8,6 +8,7 @@ const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
 const timeElapsed = player.querySelector('.player__elapsed');
 const timeDuration = player.querySelector('.player__duration');
+const mute = player.querySelector('.player__mute');
 
 /* Build functions */
 function togglePlay() {
@@ -58,7 +59,9 @@ function setElapsed() {
 	timeElapsed.textContent = formattedTime(video.currentTime);
 }
 
-//mute
+function toggleMute() {
+	video.muted = !video.muted;
+}
 
 //full screen
 
@@ -73,6 +76,8 @@ video.addEventListener('timeupdate', handleProgress);
 video.addEventListener('timeupdate', setElapsed);
 
 toggle.addEventListener('click', togglePlay);
+
+mute.addEventListener('click', toggleMute);
 
 skipButtons.forEach(button => button.addEventListener('click', skip));
 
