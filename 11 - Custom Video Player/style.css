@@ -26,6 +26,12 @@ body {
   overflow: hidden;
 }
 
+.player__time {
+	align-items: center;
+	display: flex;
+	font-size: 14px;
+}
+
 .player__video {
   width: 100%;
 }
@@ -39,7 +45,6 @@ body {
   outline:0;
   padding: 0;
   cursor:pointer;
-  max-width:50px;
 }
 
 .player__button:focus {
@@ -89,7 +94,7 @@ body {
   width:50%;
   background:#ffc600;
   flex:0;
-  flex-basis:50%;
+  flex-basis:0%;
 }
 
 /* unholy css to style input type="range" */
