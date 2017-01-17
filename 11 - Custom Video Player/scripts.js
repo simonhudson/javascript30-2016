@@ -6,6 +6,8 @@ const progressBar = player.querySelector('.progress__filled');
 const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
+const timeElapsed = player.querySelector('.player__elapsed');
+const timeDuration = player.querySelector('.player__duration');
 
 /* Build functions */
 function togglePlay() {
@@ -36,15 +38,39 @@ function scrub(e) {
 	video.currentTime = scrubTime;
 }
 
-// Time remaining
+function strPadLeft(string, pad, length) {
+	return (new Array(length+1).join(pad)+string).slice(-length);
+}
 
-//time elapsed
+function formattedTime(time) {
+	time = Math.floor(time);
+	const minutes = Math.floor(time / 60);
+	const seconds = time - minutes * 60;
+
+	return strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
+}
+
+function setDuration() {
+	timeDuration.textContent = formattedTime(video.duration);
+}
+
+function setElapsed() {
+	timeElapsed.textContent = formattedTime(video.currentTime);
+}
+
+//mute
+
+//full screen
 
 /* Hook up event listeners */
+video.addEventListener('loadedmetadata', setDuration);
+video.addEventListener('loadedmetadata', setElapsed);
+
 video.addEventListener('click', togglePlay);
 video.addEventListener('play', updateButton);
 video.addEventListener('pause', updateButton);
 video.addEventListener('timeupdate', handleProgress);
+video.addEventListener('timeupdate', setElapsed);
 
 toggle.addEventListener('click', togglePlay);
 
