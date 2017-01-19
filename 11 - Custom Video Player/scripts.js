@@ -12,59 +12,15 @@ const mute = player.querySelector('.player__mute');
 const fullScreen = player.querySelector('.player__fullscreen');
 
 /* Build functions */
-function togglePlay() {
-	const method = video.paused ? 'play' : 'pause';
-	video[method]();
-}
-
-function updateButton() {
-	const icon = this.paused ? '►' : '❚ ❚';
-	toggle.textContent = icon;
-}
-
-function skip() {
-	video.currentTime += parseFloat(this.dataset.skip);
-}
-
-function handleRangeUpdate() {
-	video[this.name] = parseFloat(this.value);
-}
-
-function handleProgress() {
-	const percent = (video.currentTime / video.duration) * 100;
-	progressBar.style.flexBasis = `${percent}%`;
-}
-
-function scrub(e) {
-	const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
-	video.currentTime = scrubTime;
-}
-
-function strPadLeft(string, pad, length) {
-	return (new Array(length+1).join(pad)+string).slice(-length);
-}
-
-function formattedTime(time) {
-	time = Math.floor(time);
-	const minutes = Math.floor(time / 60);
-	const seconds = time - minutes * 60;
-
-	return strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
-}
-
-function setDuration() {
-	timeDuration.textContent = formattedTime(video.duration);
-}
-
-function setElapsed() {
-	timeElapsed.textContent = formattedTime(video.currentTime);
-}
-
-function toggleMute() {
-	video.muted = !video.muted;
-}
-
-function setFullScreen() {
+const togglePlay = () => video[(video.paused ? 'play' : 'pause')]();
+const updateButton = () => toggle.textContent = this.paused ? '►' : '❚ ❚';
+const handleProgress = () => progressBar.style.flexBasis = `${(video.currentTime / video.duration) * 100}%`;
+const scrub = (e) => video.currentTime = (e.offsetX / progress.offsetWidth) * video.duration;
+const setDuration = () => timeDuration.textContent = formattedTime(video.duration);
+const setElapsed = () => timeElapsed.textContent = formattedTime(video.currentTime);
+const toggleMute = () => video.muted = !video.muted;
+const strPadLeft = (string, pad, length) => (new Array(length+1).join(pad)+string).slice(-length);
+const setFullScreen = () => {
 
 	// Need vendor prefixes as browser support is flaky at the moment
 	if (video.requestFullscreen)
@@ -77,6 +33,21 @@ function setFullScreen() {
 		video.msRequestFullscreen();
 
 }
+
+function skip() {
+	video.currentTime += parseFloat(this.dataset.skip);
+}
+
+function handleRangeUpdate() {
+	video[this.name] = parseFloat(this.value);
+}
+
+const formattedTime = (time) => {
+	time = Math.floor(time);
+	const minutes = Math.floor(time / 60);
+	const seconds = time - minutes * 60;
+	return strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
+};
 
 /* Hook up event listeners */
 video.addEventListener('loadedmetadata', setDuration);
